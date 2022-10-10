@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "elm-book ./src/Main.elm"
+    "postinstall": "elm-tooling install",
+    "start": "run-pty % npm run start:elm % npm run start:http",
+    "start:elm": "elm-watch hot",
+    "start:http": "serve build",
+    "build": "elm-watch make --optimize"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "elm-book": "^1.0.1",
-    "elm-tooling": "^1.7.0"
+    "elm-tooling": "^1.7.0",
+    "elm-watch": "^1.0.2",
+    "run-pty": "^4.0.1",
+    "serve": "^14.0.1"
   }
 }

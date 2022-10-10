@@ -1,0 +1,15 @@
+{
+  "name": "elm-theme-spec",
+  "version": "1.0.0",
+  "license": "MPL-2.0",
+  "author": "Georges Boris",
+  "description": "Create themed elm applications",
+  "scripts": {
+    "postinstall": "elm-tooling install",
+    "docs": "elm-doc-preview"
+  },
+  "devDependencies": {
+    "elm-doc-preview": "^5.0.5",
+    "elm-tooling": "^1.7.0"
+  }
+}

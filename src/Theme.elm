@@ -1,88 +1,95 @@
 module Theme exposing
-    ( DarkModeStrategy
-    , Theme
-    , baseAux
-    , baseAuxWithAlpha
-    , baseBackground
-    , baseBackgroundWithAlpha
-    , baseForeground
-    , baseForegroundWithAlpha
-    , dangerAux
-    , dangerAuxWithAlpha
-    , dangerBackground
-    , dangerBackgroundWithAlpha
-    , dangerForeground
-    , dangerForegroundWithAlpha
-    , darkTheme
-    , fontCode
-    , fontText
-    , fontTitle
-    , fromTheme
-    , globalProvider
-    , globalProviderWithDarkMode
-    , lightTheme
-    , new
-    , optimizedTheme
-    , optimizedThemeWithDarkMode
-    , primaryAux
-    , primaryAuxWithAlpha
-    , primaryBackground
-    , primaryBackgroundWithAlpha
-    , primaryForeground
-    , primaryForegroundWithAlpha
-    , provider
-    , providerWithDarkMode
+    ( new, ThemeData, ThemeFonts, ThemeColorSet, Theme
+    , lightTheme, darkTheme
+    , fromTheme, toTheme
+    , withFonts, withFontTitle, withFontText, withFontCode
+    , withBase, withBaseForeground, withBaseBackground, withBaseAux
+    , withNeutral, withNeutralForeground, withNeutralBackground, withNeutralAux
+    , withPrimary, withPrimaryForeground, withPrimaryBackground, withPrimaryAux
+    , withSecondary, withSecondaryForeground, withSecondaryBackground, withSecondaryAux
+    , withSuccess, withSuccessForeground, withSuccessBackground, withSuccessAux
+    , withWarning, withWarningForeground, withWarningBackground, withWarningAux
+    , withDanger, withDangerForeground, withDangerBackground, withDangerAux
+    , withThemeData, withExtraValues
+    , globalProvider, provider
+    , globalProviderWithDarkMode, providerWithDarkMode, classStrategy, systemStrategy, DarkModeStrategy
+    , optimizedProvider, optimizedProviderWithDarkMode
     , sample
-    , secondaryAux
-    , secondaryAuxWithAlpha
-    , secondaryBackground
-    , secondaryBackgroundWithAlpha
-    , secondaryForeground
-    , secondaryForegroundWithAlpha
-    , successAux
-    , successAuxWithAlpha
-    , successBackground
-    , successBackgroundWithAlpha
-    , successForeground
-    , successForegroundWithAlpha
-    , toTheme
-    , warningAux
-    , warningAuxWithAlpha
-    , warningBackground
-    , warningBackgroundWithAlpha
-    , warningForeground
-    , warningForegroundWithAlpha
-    , withBase
-    , withBaseAux
-    , withBaseBackground
-    , withBaseForeground
-    , withDanger
-    , withDangerAux
-    , withDangerBackground
-    , withDangerForeground
-    , withExtraValues
-    , withFontCode
-    , withFontText
-    , withFontTitle
-    , withFonts
-    , withPrimary
-    , withPrimaryAux
-    , withPrimaryBackground
-    , withPrimaryForeground
-    , withSecondary
-    , withSecondaryAux
-    , withSecondaryBackground
-    , withSecondaryForeground
-    , withSuccess
-    , withSuccessAux
-    , withSuccessBackground
-    , withSuccessForeground
-    , withThemeData
-    , withWarning
-    , withWarningAux
-    , withWarningBackground
-    , withWarningForeground, classStrategy, systemStrategy
+    , fontTitle, fontText, fontCode
+    , baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
+    , neutralForeground, neutralBackground, neutralAux, neutralForegroundWithAlpha, neutralBackgroundWithAlpha, neutralAuxWithAlpha
+    , primaryForeground, primaryBackground, primaryAux, primaryForegroundWithAlpha, primaryBackgroundWithAlpha, primaryAuxWithAlpha
+    , secondaryForeground, secondaryBackground, secondaryAux, secondaryForegroundWithAlpha, secondaryBackgroundWithAlpha, secondaryAuxWithAlpha
+    , successForeground, successBackground, successAux, successForegroundWithAlpha, successBackgroundWithAlpha, successAuxWithAlpha
+    , warningForeground, warningBackground, warningAux, warningForegroundWithAlpha, warningBackgroundWithAlpha, warningAuxWithAlpha
+    , dangerForeground, dangerBackground, dangerAux, dangerForegroundWithAlpha, dangerBackgroundWithAlpha, dangerAuxWithAlpha
+    , ThemeColorSetValues, base, neutral, primary, secondary, success, warning, danger
     )
+
+{-|
+
+
+# Creating Themes
+
+@docs new, ThemeData, ThemeFonts, ThemeColorSet, Theme
+
+
+# Built-in Themes
+
+@docs lightTheme, darkTheme
+
+
+# Extending Themes
+
+@docs fromTheme, toTheme
+@docs withFonts, withFontTitle, withFontText, withFontCode
+@docs withBase, withBaseForeground, withBaseBackground, withBaseAux
+@docs withNeutral, withNeutralForeground, withNeutralBackground, withNeutralAux
+@docs withPrimary, withPrimaryForeground, withPrimaryBackground, withPrimaryAux
+@docs withSecondary, withSecondaryForeground, withSecondaryBackground, withSecondaryAux
+@docs withSuccess, withSuccessForeground, withSuccessBackground, withSuccessAux
+@docs withWarning, withWarningForeground, withWarningBackground, withWarningAux
+@docs withDanger, withDangerForeground, withDangerBackground, withDangerAux
+@docs withThemeData, withExtraValues
+
+
+# Theme Providers
+
+@docs globalProvider, provider
+
+
+## Dark Mode
+
+@docs globalProviderWithDarkMode, providerWithDarkMode, classStrategy, systemStrategy, DarkModeStrategy
+
+
+## Optimized Providers
+
+@docs optimizedProvider, optimizedProviderWithDarkMode
+
+
+# Theme Sampler
+
+@docs sample
+
+
+# Theme Values
+
+@docs fontTitle, fontText, fontCode
+@docs baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
+@docs neutralForeground, neutralBackground, neutralAux, neutralForegroundWithAlpha, neutralBackgroundWithAlpha, neutralAuxWithAlpha
+@docs primaryForeground, primaryBackground, primaryAux, primaryForegroundWithAlpha, primaryBackgroundWithAlpha, primaryAuxWithAlpha
+@docs secondaryForeground, secondaryBackground, secondaryAux, secondaryForegroundWithAlpha, secondaryBackgroundWithAlpha, secondaryAuxWithAlpha
+@docs successForeground, successBackground, successAux, successForegroundWithAlpha, successBackgroundWithAlpha, successAuxWithAlpha
+@docs warningForeground, warningBackground, warningAux, warningForegroundWithAlpha, warningBackgroundWithAlpha, warningAuxWithAlpha
+@docs dangerForeground, dangerBackground, dangerAux, dangerForegroundWithAlpha, dangerBackgroundWithAlpha, dangerAuxWithAlpha
+
+
+# Theme Value Sets
+
+@docs ThemeColorSetValues, base, neutral, primary, secondary, success, warning, danger
+
+-}
 
 import Color exposing (Color)
 import Html as H
@@ -110,6 +117,7 @@ type ThemeBuilder
 type alias ThemeData =
     { fonts : ThemeFonts
     , base : ThemeColorSet
+    , neutral : ThemeColorSet
     , primary : ThemeColorSet
     , secondary : ThemeColorSet
     , success : ThemeColorSet
@@ -128,8 +136,8 @@ type alias ThemeFonts =
 
 {-| -}
 type alias ThemeColorSet =
-    { bg : Color
-    , fg : Color
+    { background : Color
+    , foreground : Color
     , aux : Color
     }
 
@@ -139,12 +147,17 @@ type alias ThemeColorSet =
 
 
 {-| -}
-new : ThemeData -> ThemeBuilder
+new : ThemeData -> Theme
 new data =
     ThemeBuilder
         { data = data
         , extra = []
         }
+        |> toTheme
+
+
+
+-- Extending Themes
 
 
 {-| -}
@@ -160,10 +173,6 @@ toTheme builder =
         { builder = builder
         , string = toThemeString builder
         }
-
-
-
--- Builder Transformations
 
 
 {-| -}
@@ -231,7 +240,7 @@ withBaseForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.base
     in
-    ThemeBuilder { theme | data = { data | base = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | base = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -242,7 +251,7 @@ withBaseBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.base
     in
-    ThemeBuilder { theme | data = { data | base = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | base = { colorSet | background = v } } }
 
 
 {-| -}
@@ -254,6 +263,45 @@ withBaseAux v (ThemeBuilder ({ data } as theme)) =
             data.base
     in
     ThemeBuilder { theme | data = { data | base = { colorSet | aux = v } } }
+
+
+{-| -}
+withNeutral : ThemeColorSet -> ThemeBuilder -> ThemeBuilder
+withNeutral v (ThemeBuilder ({ data } as theme)) =
+    ThemeBuilder { theme | data = { data | neutral = v } }
+
+
+{-| -}
+withNeutralForeground : Color -> ThemeBuilder -> ThemeBuilder
+withNeutralForeground v (ThemeBuilder ({ data } as theme)) =
+    let
+        colorSet : ThemeColorSet
+        colorSet =
+            data.neutral
+    in
+    ThemeBuilder { theme | data = { data | neutral = { colorSet | foreground = v } } }
+
+
+{-| -}
+withNeutralBackground : Color -> ThemeBuilder -> ThemeBuilder
+withNeutralBackground v (ThemeBuilder ({ data } as theme)) =
+    let
+        colorSet : ThemeColorSet
+        colorSet =
+            data.neutral
+    in
+    ThemeBuilder { theme | data = { data | neutral = { colorSet | background = v } } }
+
+
+{-| -}
+withNeutralAux : Color -> ThemeBuilder -> ThemeBuilder
+withNeutralAux v (ThemeBuilder ({ data } as theme)) =
+    let
+        colorSet : ThemeColorSet
+        colorSet =
+            data.neutral
+    in
+    ThemeBuilder { theme | data = { data | neutral = { colorSet | aux = v } } }
 
 
 {-| -}
@@ -270,7 +318,7 @@ withPrimaryForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.primary
     in
-    ThemeBuilder { theme | data = { data | primary = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | primary = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -281,7 +329,7 @@ withPrimaryBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.primary
     in
-    ThemeBuilder { theme | data = { data | primary = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | primary = { colorSet | background = v } } }
 
 
 {-| -}
@@ -309,7 +357,7 @@ withSecondaryForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.secondary
     in
-    ThemeBuilder { theme | data = { data | secondary = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | secondary = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -320,7 +368,7 @@ withSecondaryBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.secondary
     in
-    ThemeBuilder { theme | data = { data | secondary = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | secondary = { colorSet | background = v } } }
 
 
 {-| -}
@@ -348,7 +396,7 @@ withSuccessForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.success
     in
-    ThemeBuilder { theme | data = { data | success = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | success = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -359,7 +407,7 @@ withSuccessBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.success
     in
-    ThemeBuilder { theme | data = { data | success = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | success = { colorSet | background = v } } }
 
 
 {-| -}
@@ -387,7 +435,7 @@ withDangerForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.danger
     in
-    ThemeBuilder { theme | data = { data | danger = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | danger = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -398,7 +446,7 @@ withDangerBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.danger
     in
-    ThemeBuilder { theme | data = { data | danger = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | danger = { colorSet | background = v } } }
 
 
 {-| -}
@@ -426,7 +474,7 @@ withWarningForeground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.warning
     in
-    ThemeBuilder { theme | data = { data | warning = { colorSet | fg = v } } }
+    ThemeBuilder { theme | data = { data | warning = { colorSet | foreground = v } } }
 
 
 {-| -}
@@ -437,7 +485,7 @@ withWarningBackground v (ThemeBuilder ({ data } as theme)) =
         colorSet =
             data.warning
     in
-    ThemeBuilder { theme | data = { data | warning = { colorSet | bg = v } } }
+    ThemeBuilder { theme | data = { data | warning = { colorSet | background = v } } }
 
 
 {-| -}
@@ -458,7 +506,7 @@ withWarningAux v (ThemeBuilder ({ data } as theme)) =
 {-| -}
 namespace : String
 namespace =
-    "tmspc"
+    "theme"
 
 
 {-| -}
@@ -525,6 +573,42 @@ baseAux =
 baseAuxWithAlpha : Float -> String
 baseAuxWithAlpha =
     cssVarWithAlpha "base-aux"
+
+
+{-| -}
+neutralForeground : String
+neutralForeground =
+    cssVar "neutral-fg"
+
+
+{-| -}
+neutralForegroundWithAlpha : Float -> String
+neutralForegroundWithAlpha =
+    cssVarWithAlpha "neutral-fg"
+
+
+{-| -}
+neutralBackground : String
+neutralBackground =
+    cssVar "neutral-bg"
+
+
+{-| -}
+neutralBackgroundWithAlpha : Float -> String
+neutralBackgroundWithAlpha =
+    cssVarWithAlpha "neutral-bg"
+
+
+{-| -}
+neutralAux : String
+neutralAux =
+    cssVar "neutral-aux"
+
+
+{-| -}
+neutralAuxWithAlpha : Float -> String
+neutralAuxWithAlpha =
+    cssVarWithAlpha "neutral-aux"
 
 
 {-| -}
@@ -735,6 +819,18 @@ base =
 
 
 {-| -}
+neutral : ThemeColorSetValues
+neutral =
+    { foreground = neutralForeground
+    , foregroundWithAlpha = neutralForegroundWithAlpha
+    , background = neutralBackground
+    , backgroundWithAlpha = neutralBackgroundWithAlpha
+    , aux = neutralAux
+    , auxWithAlpha = neutralAuxWithAlpha
+    }
+
+
+{-| -}
 primary : ThemeColorSetValues
 primary =
     { foreground = primaryForeground
@@ -801,87 +897,95 @@ danger =
 {-| -}
 lightTheme : Theme
 lightTheme =
-    { fonts =
-        { title = "system-ui, sans-serif"
-        , text = "system-ui, sans-serif"
-        , code = "monospace"
+    new
+        { fonts =
+            { title = "system-ui, sans-serif"
+            , text = "system-ui, sans-serif"
+            , code = "monospace"
+            }
+        , base =
+            { background = Color.rgb255 253 253 253
+            , foreground = Color.rgb255 62 62 62
+            , aux = Color.rgb255 150 150 150
+            }
+        , neutral =
+            { background = Color.rgb255 91 111 125
+            , foreground = Color.rgb255 141 160 174
+            , aux = Color.rgb255 255 255 255
+            }
+        , primary =
+            { background = Color.rgb255 0 141 235
+            , foreground = Color.rgb255 95 185 244
+            , aux = Color.rgb255 255 255 255
+            }
+        , secondary =
+            { background = Color.rgb255 234 96 223
+            , foreground = Color.rgb255 248 142 239
+            , aux = Color.rgb255 255 255 255
+            }
+        , success =
+            { background = Color.rgb255 68 183 1
+            , foreground = Color.rgb255 115 209 60
+            , aux = Color.rgb255 255 255 255
+            }
+        , warning =
+            { background = Color.rgb255 230 157 0
+            , foreground = Color.rgb255 249 188 34
+            , aux = Color.rgb255 255 255 255
+            }
+        , danger =
+            { background = Color.rgb255 220 49 50
+            , foreground = Color.rgb255 248 102 103
+            , aux = Color.rgb255 255 255 255
+            }
         }
-    , base =
-        { bg = Color.rgb255 253 253 253
-        , fg = Color.rgb255 62 62 62
-        , aux = Color.rgb255 150 150 150
-        }
-    , primary =
-        { bg = Color.rgb255 0 141 235
-        , fg = Color.rgb255 95 185 244
-        , aux = Color.rgb255 255 255 255
-        }
-    , secondary =
-        { bg = Color.rgb255 91 111 125
-        , fg = Color.rgb255 141 160 174
-        , aux = Color.rgb255 255 255 255
-        }
-    , success =
-        { bg = Color.rgb255 68 183 1
-        , fg = Color.rgb255 115 209 60
-        , aux = Color.rgb255 255 255 255
-        }
-    , warning =
-        { bg = Color.rgb255 230 157 0
-        , fg = Color.rgb255 249 188 34
-        , aux = Color.rgb255 255 255 255
-        }
-    , danger =
-        { bg = Color.rgb255 220 49 50
-        , fg = Color.rgb255 248 102 103
-        , aux = Color.rgb255 255 255 255
-        }
-    }
-        |> new
-        |> toTheme
 
 
 {-| -}
 darkTheme : Theme
 darkTheme =
-    { fonts =
-        { title = "system-ui, sans-serif"
-        , text = "system-ui, sans-serif"
-        , code = "monospace"
+    new
+        { fonts =
+            { title = "system-ui, sans-serif"
+            , text = "system-ui, sans-serif"
+            , code = "monospace"
+            }
+        , base =
+            { background = Color.rgb255 37 40 48
+            , foreground = Color.rgb255 227 227 227
+            , aux = Color.rgb255 110 114 120
+            }
+        , neutral =
+            { background = Color.rgb255 21 22 26
+            , foreground = Color.rgb255 255 255 255
+            , aux = Color.rgb255 255 255 255
+            }
+        , primary =
+            { background = Color.rgb255 0 153 255
+            , foreground = Color.rgb255 145 190 243
+            , aux = Color.rgb255 255 255 255
+            }
+        , secondary =
+            { background = Color.rgb255 234 96 223
+            , foreground = Color.rgb255 248 142 239
+            , aux = Color.rgb255 255 255 255
+            }
+        , success =
+            { background = Color.rgb255 74 200 0
+            , foreground = Color.rgb255 119 223 59
+            , aux = Color.rgb255 27 74 0
+            }
+        , warning =
+            { background = Color.rgb255 251 179 0
+            , foreground = Color.rgb255 255 215 114
+            , aux = Color.rgb255 91 65 0
+            }
+        , danger =
+            { background = Color.rgb255 255 77 79
+            , foreground = Color.rgb255 242 156 156
+            , aux = Color.rgb255 91 0 1
+            }
         }
-    , base =
-        { bg = Color.rgb255 37 40 48
-        , fg = Color.rgb255 227 227 227
-        , aux = Color.rgb255 110 114 120
-        }
-    , primary =
-        { bg = Color.rgb255 0 153 255
-        , fg = Color.rgb255 145 190 243
-        , aux = Color.rgb255 255 255 255
-        }
-    , secondary =
-        { bg = Color.rgb255 21 22 26
-        , fg = Color.rgb255 255 255 255
-        , aux = Color.rgb255 255 255 255
-        }
-    , success =
-        { bg = Color.rgb255 74 200 0
-        , fg = Color.rgb255 119 223 59
-        , aux = Color.rgb255 27 74 0
-        }
-    , warning =
-        { bg = Color.rgb255 251 179 0
-        , fg = Color.rgb255 255 215 114
-        , aux = Color.rgb255 91 65 0
-        }
-    , danger =
-        { bg = Color.rgb255 255 77 79
-        , fg = Color.rgb255 242 156 156
-        , aux = Color.rgb255 91 0 1
-        }
-    }
-        |> new
-        |> toTheme
 
 
 
@@ -894,7 +998,8 @@ sample =
     let
         colorVars : List ThemeColorSetValues
         colorVars =
-            [ primary
+            [ neutral
+            , primary
             , secondary
             , success
             , warning
@@ -953,10 +1058,11 @@ sample =
                 , HA.style "width" "100%"
                 ]
                 (H.div
-                    [ HA.style "grid-column" "span 1 / span 1"
+                    [ HA.style "grid-column" "span 2 / span 2"
                     , HA.style "display" "flex"
                     , HA.style "flex-direction" "column"
                     , HA.style "gap" "8px"
+                    , HA.style "padding-bottom" "12px"
                     ]
                     [ H.h1
                         [ HA.style "font-family" fontTitle
@@ -1009,8 +1115,8 @@ toThemeString (ThemeBuilder { data, extra }) =
 
         colorSpec : String -> ThemeColorSet -> List ( String, String )
         colorSpec name color =
-            [ colorVars (name ++ "-bg") color.bg
-            , colorVars (name ++ "-fg") color.fg
+            [ colorVars (name ++ "-bg") color.background
+            , colorVars (name ++ "-fg") color.foreground
             , colorVars (name ++ "-aux") color.aux
             ]
                 |> List.concat
@@ -1020,6 +1126,7 @@ toThemeString (ThemeBuilder { data, extra }) =
       , ( "font-code", data.fonts.code )
       ]
     , colorSpec "base" data.base
+    , colorSpec "neutral" data.neutral
     , colorSpec "primary" data.primary
     , colorSpec "secondary" data.secondary
     , colorSpec "success" data.success
@@ -1028,13 +1135,13 @@ toThemeString (ThemeBuilder { data, extra }) =
     , extra
     ]
         |> List.concat
-        |> List.map (Tuple.mapFirst ((++) "tmspc-"))
+        |> List.map (Tuple.mapFirst (\v -> namespace ++ "-" ++ v))
         |> List.map (\( k, v ) -> "--" ++ k ++ ":" ++ v)
         |> String.join ";"
 
 
 
--- Providers
+-- Theme Providers
 
 
 {-| Used to propagate themes to an specific scope.
@@ -1042,13 +1149,13 @@ toThemeString (ThemeBuilder { data, extra }) =
     main : Html msg
     main =
         div []
-            [ ThemeProvider.globalProvider defaultTheme
+            [ Theme.globalProvider defaultTheme
 
             -- section using the default theme
             , section [] [ .. ]
 
             -- section using the orange theme
-            , ThemeProvider.provider orangeTheme [] [ .. ]
+            , Theme.provider orangeTheme [] [ .. ]
             ]
 
 -}
@@ -1068,17 +1175,17 @@ provider theme attrs children =
            )
 
 
-{-| Used to provide a **Theme** globally. It will be applied to your `body` element and it will be available for use anywhere in your application.
+{-| Used to provide a Theme globally. It will be applied to your `body` element and it will be available for use anywhere in your application.
 
     main : Html msg
     main =
         div []
-            [ ThemeProvider.globalProvider lightTheme
-            , p [ style "color" "var(--my-theme-accent)" ]
-                [ text "I have the `accent` color" ]
+            [ Theme.globalProvider lightTheme
+            , p [ style "color" Theme.baseForeground ]
+                [ text "I'm colored using the `base foreground` value!" ]
             ]
 
-**Note**: You are still able to overwrite this **Theme** locally.
+**Note**: You are still able to overwrite this Theme locally.
 
 -}
 globalProvider : Theme -> H.Html msg
@@ -1090,22 +1197,21 @@ globalProvider theme =
         }
 
 
-{-| Defines the dark mode strategy.
-
-  - `SystemStrategy` uses the user system settings.
-  - `ClassStrategy` uses the presence of a CSS class to determine dark mode.
-
--}
+{-| -}
 type DarkModeStrategy
     = SystemStrategy
     | ClassStrategy String
 
 
+{-| Uses the user system settings to decide between light and dark mode.
+-}
 systemStrategy : DarkModeStrategy
 systemStrategy =
     SystemStrategy
 
 
+{-| Uses the presence of a given CSS class in the element scope to decide between light and dark mode.
+-}
 classStrategy : String -> DarkModeStrategy
 classStrategy =
     ClassStrategy
@@ -1116,16 +1222,16 @@ classStrategy =
     main : Html msg
     main =
         div []
-            [ ThemeProvider.globalProviderWithDarkMode
+            [ Theme.globalProviderWithDarkMode
                 { light = lightTheme
                 , dark = darkTheme
-                , strategy = ThemeProvider.SystemStrategy
+                , strategy = Theme.systemStrategy
                 }
-            , p [ style "color" "var(--my-theme-accent)" ]
-                [ text "I have the `accent` color" ]
+            , p [ style "color" Theme.baseForeground ]
+                [ text "I'm colored using the `base foreground` value!" ]
             ]
 
-**Note**: You are still able to overwrite this **Theme** locally.
+**Note**: You are still able to overwrite this Theme locally.
 
 -}
 globalProviderWithDarkMode : { light : Theme, dark : Theme, strategy : DarkModeStrategy } -> H.Html msg
@@ -1142,20 +1248,20 @@ globalProviderWithDarkMode props =
     main : Html msg
     main =
         div []
-            [ ThemeProvider.globalProviderWithDarkMode
+            [ Theme.globalProviderWithDarkMode
                 { light = lightTheme
                 , dark = darkTheme
-                , strategy = ThemeProvider.SystemStrategy
+                , strategy = Theme.systemStrategy
                 }
 
             -- section using the default light or dark theme
             , section [] [ .. ]
 
             -- section using the orange light and dark themes
-            , ThemeProvider.providerWithDarkMode
+            , Theme.providerWithDarkMode
                 { light = lightOrange
                 , dark = darkOrange
-                , strategy = ThemeProvider.SystemStrategy
+                , strategy = Theme.systemStrategy
                 }
                 [] [ .. ]
             ]
@@ -1178,7 +1284,7 @@ providerWithDarkMode props attrs children =
 
 
 {-| -}
-type alias OptimizedTheme msg =
+type alias ThemeProvider msg =
     { styles : H.Html msg
     , provider : List (H.Attribute msg) -> List (H.Html msg) -> H.Html msg
     }
@@ -1186,8 +1292,8 @@ type alias OptimizedTheme msg =
 
 {-|
 
-    optimizedTheme =
-        optimizedTheme theme
+    myTheme =
+        optimizedProvider theme
 
     body []
         [ myTheme.styles
@@ -1196,8 +1302,8 @@ type alias OptimizedTheme msg =
         ]
 
 -}
-optimizedTheme : Theme -> OptimizedTheme msg
-optimizedTheme theme =
+optimizedProvider : Theme -> ThemeProvider msg
+optimizedProvider theme =
     provider_
         { light = theme
         , dark = Nothing
@@ -1206,10 +1312,10 @@ optimizedTheme theme =
 
 
 {-| -}
-optimizedThemeWithDarkMode :
+optimizedProviderWithDarkMode :
     { light : Theme, dark : Theme, strategy : DarkModeStrategy }
-    -> OptimizedTheme msg
-optimizedThemeWithDarkMode props =
+    -> ThemeProvider msg
+optimizedProviderWithDarkMode props =
     provider_
         { light = props.light
         , dark = Just props.dark

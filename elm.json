@@ -1,11 +1,11 @@
 {
     "type": "package",
     "name": "uncover-co/elm-theme",
-    "summary": "Create themed Elm applications.",
+    "summary": "An opinionated theme especification library.",
     "license": "MPL-2.0",
     "version": "1.0.0",
     "exposed-modules": [
-        "ThemeSpec"
+        "Theme"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {

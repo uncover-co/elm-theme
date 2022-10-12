@@ -494,7 +494,7 @@ ${variant}`;
   var VERSION = "1.0.2";
   var TARGET_NAME = "main";
   var INITIAL_ELM_COMPILED_TIMESTAMP = Number(
-    "1665439879635"
+    "1665579054255"
   );
   var ORIGINAL_COMPILATION_MODE = "standard";
   var WEBSOCKET_PORT = "51212";
@@ -6924,28 +6924,6 @@ var $author$project$Theme$classStrategy = $author$project$Theme$ClassStrategy;
 var $author$project$Theme$ThemeBuilder = function (a) {
 	return {$: 'ThemeBuilder', a: a};
 };
-var $author$project$Theme$new = function (data) {
-	return $author$project$Theme$ThemeBuilder(
-		{data: data, extra: _List_Nil});
-};
-var $avh4$elm_color$Color$RgbaSpace = F4(
-	function (a, b, c, d) {
-		return {$: 'RgbaSpace', a: a, b: b, c: c, d: d};
-	});
-var $elm$core$Basics$fdiv = _Basics_fdiv;
-var $elm$core$Basics$toFloat = _Basics_toFloat;
-var $avh4$elm_color$Color$scaleFrom255 = function (c) {
-	return c / 255;
-};
-var $avh4$elm_color$Color$rgb255 = F3(
-	function (r, g, b) {
-		return A4(
-			$avh4$elm_color$Color$RgbaSpace,
-			$avh4$elm_color$Color$scaleFrom255(r),
-			$avh4$elm_color$Color$scaleFrom255(g),
-			$avh4$elm_color$Color$scaleFrom255(b),
-			1.0);
-	});
 var $author$project$Theme$Theme = function (a) {
 	return {$: 'Theme', a: a};
 };
@@ -7071,11 +7049,14 @@ var $elm$core$Tuple$mapFirst = F2(
 			y);
 	});
 var $elm$core$Basics$mul = _Basics_mul;
+var $author$project$Theme$namespace = 'theme';
 var $elm$core$String$concat = function (strings) {
 	return A2($elm$core$String$join, '', strings);
 };
+var $elm$core$Basics$fdiv = _Basics_fdiv;
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$core$Basics$round = _Basics_round;
+var $elm$core$Basics$toFloat = _Basics_toFloat;
 var $avh4$elm_color$Color$toCssString = function (_v0) {
 	var r = _v0.a;
 	var g = _v0.b;
@@ -7146,8 +7127,8 @@ var $author$project$Theme$toThemeString = function (_v0) {
 			return $elm$core$List$concat(
 				_List_fromArray(
 					[
-						A2(colorVars, name + '-bg', color.bg),
-						A2(colorVars, name + '-fg', color.fg),
+						A2(colorVars, name + '-bg', color.background),
+						A2(colorVars, name + '-fg', color.foreground),
 						A2(colorVars, name + '-aux', color.aux)
 					]));
 		});
@@ -7164,7 +7145,9 @@ var $author$project$Theme$toThemeString = function (_v0) {
 			A2(
 				$elm$core$List$map,
 				$elm$core$Tuple$mapFirst(
-					$elm$core$Basics$append('tmspc-')),
+					function (v) {
+						return $author$project$Theme$namespace + ('-' + v);
+					}),
 				$elm$core$List$concat(
 					_List_fromArray(
 						[
@@ -7175,6 +7158,7 @@ var $author$project$Theme$toThemeString = function (_v0) {
 								_Utils_Tuple2('font-code', data.fonts.code)
 							]),
 							A2(colorSpec, 'base', data.base),
+							A2(colorSpec, 'neutral', data.neutral),
 							A2(colorSpec, 'primary', data.primary),
 							A2(colorSpec, 'secondary', data.secondary),
 							A2(colorSpec, 'success', data.success),
@@ -7190,41 +7174,66 @@ var $author$project$Theme$toTheme = function (builder) {
 			string: $author$project$Theme$toThemeString(builder)
 		});
 };
-var $author$project$Theme$darkTheme = $author$project$Theme$toTheme(
-	$author$project$Theme$new(
-		{
-			base: {
-				aux: A3($avh4$elm_color$Color$rgb255, 110, 114, 120),
-				bg: A3($avh4$elm_color$Color$rgb255, 37, 40, 48),
-				fg: A3($avh4$elm_color$Color$rgb255, 227, 227, 227)
-			},
-			danger: {
-				aux: A3($avh4$elm_color$Color$rgb255, 91, 0, 1),
-				bg: A3($avh4$elm_color$Color$rgb255, 255, 77, 79),
-				fg: A3($avh4$elm_color$Color$rgb255, 242, 156, 156)
-			},
-			fonts: {code: 'monospace', text: 'system-ui, sans-serif', title: 'system-ui, sans-serif'},
-			primary: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 0, 153, 255),
-				fg: A3($avh4$elm_color$Color$rgb255, 145, 190, 243)
-			},
-			secondary: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 21, 22, 26),
-				fg: A3($avh4$elm_color$Color$rgb255, 255, 255, 255)
-			},
-			success: {
-				aux: A3($avh4$elm_color$Color$rgb255, 27, 74, 0),
-				bg: A3($avh4$elm_color$Color$rgb255, 74, 200, 0),
-				fg: A3($avh4$elm_color$Color$rgb255, 119, 223, 59)
-			},
-			warning: {
-				aux: A3($avh4$elm_color$Color$rgb255, 91, 65, 0),
-				bg: A3($avh4$elm_color$Color$rgb255, 251, 179, 0),
-				fg: A3($avh4$elm_color$Color$rgb255, 255, 215, 114)
-			}
-		}));
+var $author$project$Theme$new = function (data) {
+	return $author$project$Theme$toTheme(
+		$author$project$Theme$ThemeBuilder(
+			{data: data, extra: _List_Nil}));
+};
+var $avh4$elm_color$Color$RgbaSpace = F4(
+	function (a, b, c, d) {
+		return {$: 'RgbaSpace', a: a, b: b, c: c, d: d};
+	});
+var $avh4$elm_color$Color$scaleFrom255 = function (c) {
+	return c / 255;
+};
+var $avh4$elm_color$Color$rgb255 = F3(
+	function (r, g, b) {
+		return A4(
+			$avh4$elm_color$Color$RgbaSpace,
+			$avh4$elm_color$Color$scaleFrom255(r),
+			$avh4$elm_color$Color$scaleFrom255(g),
+			$avh4$elm_color$Color$scaleFrom255(b),
+			1.0);
+	});
+var $author$project$Theme$darkTheme = $author$project$Theme$new(
+	{
+		base: {
+			aux: A3($avh4$elm_color$Color$rgb255, 110, 114, 120),
+			background: A3($avh4$elm_color$Color$rgb255, 37, 40, 48),
+			foreground: A3($avh4$elm_color$Color$rgb255, 227, 227, 227)
+		},
+		danger: {
+			aux: A3($avh4$elm_color$Color$rgb255, 91, 0, 1),
+			background: A3($avh4$elm_color$Color$rgb255, 255, 77, 79),
+			foreground: A3($avh4$elm_color$Color$rgb255, 242, 156, 156)
+		},
+		fonts: {code: 'monospace', text: 'system-ui, sans-serif', title: 'system-ui, sans-serif'},
+		neutral: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 21, 22, 26),
+			foreground: A3($avh4$elm_color$Color$rgb255, 255, 255, 255)
+		},
+		primary: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 0, 153, 255),
+			foreground: A3($avh4$elm_color$Color$rgb255, 145, 190, 243)
+		},
+		secondary: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 234, 96, 223),
+			foreground: A3($avh4$elm_color$Color$rgb255, 248, 142, 239)
+		},
+		success: {
+			aux: A3($avh4$elm_color$Color$rgb255, 27, 74, 0),
+			background: A3($avh4$elm_color$Color$rgb255, 74, 200, 0),
+			foreground: A3($avh4$elm_color$Color$rgb255, 119, 223, 59)
+		},
+		warning: {
+			aux: A3($avh4$elm_color$Color$rgb255, 91, 65, 0),
+			background: A3($avh4$elm_color$Color$rgb255, 251, 179, 0),
+			foreground: A3($avh4$elm_color$Color$rgb255, 255, 215, 114)
+		}
+	});
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
@@ -7652,41 +7661,45 @@ var $author$project$Theme$globalProviderWithDarkMode = function (props) {
 			strategy: props.strategy
 		});
 };
-var $author$project$Theme$lightTheme = $author$project$Theme$toTheme(
-	$author$project$Theme$new(
-		{
-			base: {
-				aux: A3($avh4$elm_color$Color$rgb255, 150, 150, 150),
-				bg: A3($avh4$elm_color$Color$rgb255, 253, 253, 253),
-				fg: A3($avh4$elm_color$Color$rgb255, 62, 62, 62)
-			},
-			danger: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 220, 49, 50),
-				fg: A3($avh4$elm_color$Color$rgb255, 248, 102, 103)
-			},
-			fonts: {code: 'monospace', text: 'system-ui, sans-serif', title: 'system-ui, sans-serif'},
-			primary: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 0, 141, 235),
-				fg: A3($avh4$elm_color$Color$rgb255, 95, 185, 244)
-			},
-			secondary: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 91, 111, 125),
-				fg: A3($avh4$elm_color$Color$rgb255, 141, 160, 174)
-			},
-			success: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 68, 183, 1),
-				fg: A3($avh4$elm_color$Color$rgb255, 115, 209, 60)
-			},
-			warning: {
-				aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
-				bg: A3($avh4$elm_color$Color$rgb255, 230, 157, 0),
-				fg: A3($avh4$elm_color$Color$rgb255, 249, 188, 34)
-			}
-		}));
+var $author$project$Theme$lightTheme = $author$project$Theme$new(
+	{
+		base: {
+			aux: A3($avh4$elm_color$Color$rgb255, 150, 150, 150),
+			background: A3($avh4$elm_color$Color$rgb255, 253, 253, 253),
+			foreground: A3($avh4$elm_color$Color$rgb255, 62, 62, 62)
+		},
+		danger: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 220, 49, 50),
+			foreground: A3($avh4$elm_color$Color$rgb255, 248, 102, 103)
+		},
+		fonts: {code: 'monospace', text: 'system-ui, sans-serif', title: 'system-ui, sans-serif'},
+		neutral: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 91, 111, 125),
+			foreground: A3($avh4$elm_color$Color$rgb255, 141, 160, 174)
+		},
+		primary: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 0, 141, 235),
+			foreground: A3($avh4$elm_color$Color$rgb255, 95, 185, 244)
+		},
+		secondary: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 234, 96, 223),
+			foreground: A3($avh4$elm_color$Color$rgb255, 248, 142, 239)
+		},
+		success: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 68, 183, 1),
+			foreground: A3($avh4$elm_color$Color$rgb255, 115, 209, 60)
+		},
+		warning: {
+			aux: A3($avh4$elm_color$Color$rgb255, 255, 255, 255),
+			background: A3($avh4$elm_color$Color$rgb255, 230, 157, 0),
+			foreground: A3($avh4$elm_color$Color$rgb255, 249, 188, 34)
+		}
+	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -7939,7 +7952,6 @@ var $dtwrks$elm_book$ElmBook$Chapter$renderComponent = F2(
 				}));
 	});
 var $elm$html$Html$article = _VirtualDom_node('article');
-var $author$project$Theme$namespace = 'tmspc';
 var $author$project$Theme$cssVar = function (v) {
 	return 'var(--' + ($author$project$Theme$namespace + ('-' + (v + ')')));
 };
@@ -7965,6 +7977,13 @@ var $author$project$Theme$fontCode = $author$project$Theme$cssVar('font-code');
 var $author$project$Theme$fontText = $author$project$Theme$cssVar('font-text');
 var $author$project$Theme$fontTitle = $author$project$Theme$cssVar('font-title');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $author$project$Theme$neutralAux = $author$project$Theme$cssVar('neutral-aux');
+var $author$project$Theme$neutralAuxWithAlpha = $author$project$Theme$cssVarWithAlpha('neutral-aux');
+var $author$project$Theme$neutralBackground = $author$project$Theme$cssVar('neutral-bg');
+var $author$project$Theme$neutralBackgroundWithAlpha = $author$project$Theme$cssVarWithAlpha('neutral-bg');
+var $author$project$Theme$neutralForeground = $author$project$Theme$cssVar('neutral-fg');
+var $author$project$Theme$neutralForegroundWithAlpha = $author$project$Theme$cssVarWithAlpha('neutral-fg');
+var $author$project$Theme$neutral = {aux: $author$project$Theme$neutralAux, auxWithAlpha: $author$project$Theme$neutralAuxWithAlpha, background: $author$project$Theme$neutralBackground, backgroundWithAlpha: $author$project$Theme$neutralBackgroundWithAlpha, foreground: $author$project$Theme$neutralForeground, foregroundWithAlpha: $author$project$Theme$neutralForegroundWithAlpha};
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Theme$primaryAux = $author$project$Theme$cssVar('primary-aux');
 var $author$project$Theme$primaryAuxWithAlpha = $author$project$Theme$cssVarWithAlpha('primary-aux');
@@ -7999,7 +8018,7 @@ var $author$project$Theme$warningForegroundWithAlpha = $author$project$Theme$css
 var $author$project$Theme$warning = {aux: $author$project$Theme$warningAux, auxWithAlpha: $author$project$Theme$warningAuxWithAlpha, background: $author$project$Theme$warningBackground, backgroundWithAlpha: $author$project$Theme$warningBackgroundWithAlpha, foreground: $author$project$Theme$warningForeground, foregroundWithAlpha: $author$project$Theme$warningForegroundWithAlpha};
 var $author$project$Theme$sample = function () {
 	var colorVars = _List_fromArray(
-		[$author$project$Theme$primary, $author$project$Theme$secondary, $author$project$Theme$success, $author$project$Theme$warning, $author$project$Theme$danger]);
+		[$author$project$Theme$neutral, $author$project$Theme$primary, $author$project$Theme$secondary, $author$project$Theme$success, $author$project$Theme$warning, $author$project$Theme$danger]);
 	var colorSample = function (color) {
 		return A2(
 			$elm$html$Html$div,
@@ -8098,10 +8117,11 @@ var $author$project$Theme$sample = function () {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										A2($elm$html$Html$Attributes$style, 'grid-column', 'span 1 / span 1'),
+										A2($elm$html$Html$Attributes$style, 'grid-column', 'span 2 / span 2'),
 										A2($elm$html$Html$Attributes$style, 'display', 'flex'),
 										A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-										A2($elm$html$Html$Attributes$style, 'gap', '8px')
+										A2($elm$html$Html$Attributes$style, 'gap', '8px'),
+										A2($elm$html$Html$Attributes$style, 'padding-bottom', '12px')
 									]),
 								_List_fromArray(
 									[

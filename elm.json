@@ -1,7 +1,7 @@
 {
     "type": "package",
     "name": "uncover-co/elm-theme",
-    "summary": "An opinionated theme especification library.",
+    "summary": "An opinionated, constraint-based, theme library for Elm Applications.",
     "license": "MPL-2.0",
     "version": "1.0.0",
     "exposed-modules": [
@@ -11,8 +11,7 @@
     "dependencies": {
         "avh4/elm-color": "1.0.0 <= v < 2.0.0",
         "elm/core": "1.0.0 <= v < 2.0.0",
-        "elm/html": "1.0.0 <= v < 2.0.0",
-        "uncover-co/elm-theme-provider": "2.0.0 <= v < 3.0.0"
+        "elm/html": "1.0.0 <= v < 2.0.0"
     },
     "test-dependencies": {}
 }

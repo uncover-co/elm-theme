@@ -1,9 +1,9 @@
 {
-  "name": "elm-theme-spec",
+  "name": "elm-theme",
   "version": "1.0.0",
   "license": "MPL-2.0",
   "author": "Georges Boris",
-  "description": "Create themed elm applications",
+  "description": "An opinionated, constraint-based theme library for Elm applications.",
   "scripts": {
     "postinstall": "elm-tooling install",
     "docs": "elm-doc-preview"

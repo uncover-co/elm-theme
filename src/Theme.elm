@@ -13,7 +13,7 @@ module Theme exposing
     , withThemeData, withExtraValues
     , globalProvider, provider
     , globalProviderWithDarkMode, providerWithDarkMode, classStrategy, systemStrategy, DarkModeStrategy
-    , optimizedProvider, optimizedProviderWithDarkMode
+    , optimizedProvider, optimizedProviderWithDarkMode, ThemeProvider
     , sample
     , fontTitle, fontText, fontCode
     , baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
@@ -65,7 +65,7 @@ module Theme exposing
 
 ## Optimized Providers
 
-@docs optimizedProvider, optimizedProviderWithDarkMode
+@docs optimizedProvider, optimizedProviderWithDarkMode, ThemeProvider
 
 
 # Theme Sampler

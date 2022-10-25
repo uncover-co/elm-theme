@@ -518,7 +518,7 @@ cssVar v =
 {-| -}
 cssVarWithAlpha : String -> Float -> String
 cssVarWithAlpha v alpha =
-    "var(--" ++ namespace ++ "-" ++ v ++ "-ch / " ++ String.fromFloat alpha ++ ")"
+    "rgb(var(--" ++ namespace ++ "-" ++ v ++ "-ch) / " ++ String.fromFloat alpha ++ ")"
 
 
 {-| -}

@@ -1,8 +1,8 @@
 module Theme exposing
     ( new, ThemeData, ThemeFonts, ThemeColorSet, Theme
     , lightTheme, darkTheme
-    , fromTheme, toTheme
-    , withFonts, withFontTitle, withFontText, withFontCode
+    , fromTheme, toTheme, toThemeData
+    , withFonts, withFontHeading, withFontText, withFontCode
     , withBase, withBaseForeground, withBaseBackground, withBaseAux
     , withNeutral, withNeutralForeground, withNeutralBackground, withNeutralAux
     , withPrimary, withPrimaryForeground, withPrimaryBackground, withPrimaryAux
@@ -15,7 +15,8 @@ module Theme exposing
     , globalProviderWithDarkMode, providerWithDarkMode, classStrategy, systemStrategy, DarkModeStrategy
     , optimizedProvider, optimizedProviderWithDarkMode, ThemeProvider
     , sample
-    , fontTitle, fontText, fontCode
+    , styles, stylesList
+    , fontHeading, fontText, fontCode
     , baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
     , neutralForeground, neutralBackground, neutralAux, neutralForegroundWithAlpha, neutralBackgroundWithAlpha, neutralAuxWithAlpha
     , primaryForeground, primaryBackground, primaryAux, primaryForegroundWithAlpha, primaryBackgroundWithAlpha, primaryAuxWithAlpha
@@ -41,8 +42,8 @@ module Theme exposing
 
 # Extending Themes
 
-@docs fromTheme, toTheme
-@docs withFonts, withFontTitle, withFontText, withFontCode
+@docs fromTheme, toTheme, toThemeData
+@docs withFonts, withFontHeading, withFontText, withFontCode
 @docs withBase, withBaseForeground, withBaseBackground, withBaseAux
 @docs withNeutral, withNeutralForeground, withNeutralBackground, withNeutralAux
 @docs withPrimary, withPrimaryForeground, withPrimaryBackground, withPrimaryAux
@@ -73,9 +74,14 @@ module Theme exposing
 @docs sample
 
 
+# Theme Html Helpers
+
+@docs styles, stylesList
+
+
 # Theme Values
 
-@docs fontTitle, fontText, fontCode
+@docs fontHeading, fontText, fontCode
 @docs baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
 @docs neutralForeground, neutralBackground, neutralAux, neutralForegroundWithAlpha, neutralBackgroundWithAlpha, neutralAuxWithAlpha
 @docs primaryForeground, primaryBackground, primaryAux, primaryForegroundWithAlpha, primaryBackgroundWithAlpha, primaryAuxWithAlpha
@@ -128,7 +134,7 @@ type alias ThemeData =
 
 {-| -}
 type alias ThemeFonts =
-    { title : String
+    { heading : String
     , text : String
     , code : String
     }
@@ -176,6 +182,14 @@ toTheme builder =
 
 
 {-| -}
+toThemeData : Theme -> ThemeData
+toThemeData (Theme theme) =
+    case theme.builder of
+        ThemeBuilder builder ->
+            builder.data
+
+
+{-| -}
 withThemeData : ThemeData -> ThemeBuilder -> ThemeBuilder
 withThemeData data (ThemeBuilder theme) =
     ThemeBuilder { theme | data = data }
@@ -194,14 +208,14 @@ withFonts v (ThemeBuilder ({ data } as theme)) =
 
 
 {-| -}
-withFontTitle : String -> ThemeBuilder -> ThemeBuilder
-withFontTitle v (ThemeBuilder ({ data } as theme)) =
+withFontHeading : String -> ThemeBuilder -> ThemeBuilder
+withFontHeading v (ThemeBuilder ({ data } as theme)) =
     let
         fonts : ThemeFonts
         fonts =
             data.fonts
     in
-    ThemeBuilder { theme | data = { data | fonts = { fonts | title = v } } }
+    ThemeBuilder { theme | data = { data | fonts = { fonts | heading = v } } }
 
 
 {-| -}
@@ -522,9 +536,9 @@ cssVarWithAlpha v alpha =
 
 
 {-| -}
-fontTitle : String
-fontTitle =
-    cssVar "font-title"
+fontHeading : String
+fontHeading =
+    cssVar "font-heading"
 
 
 {-| -}
@@ -899,7 +913,7 @@ lightTheme : Theme
 lightTheme =
     new
         { fonts =
-            { title = "system-ui, sans-serif"
+            { heading = "system-ui, sans-serif"
             , text = "system-ui, sans-serif"
             , code = "monospace"
             }
@@ -946,7 +960,7 @@ darkTheme : Theme
 darkTheme =
     new
         { fonts =
-            { title = "system-ui, sans-serif"
+            { heading = "system-ui, sans-serif"
             , text = "system-ui, sans-serif"
             , code = "monospace"
             }
@@ -1065,7 +1079,7 @@ sample =
                     , HA.style "padding-bottom" "12px"
                     ]
                     [ H.h1
-                        [ HA.style "font-family" fontTitle
+                        [ HA.style "font-family" fontHeading
                         , HA.style "color" baseForeground
                         , HA.style "font-size" "20px"
                         , HA.style "margin" "0"
@@ -1121,7 +1135,7 @@ toThemeString (ThemeBuilder { data, extra }) =
             ]
                 |> List.concat
     in
-    [ [ ( "font-title", data.fonts.title )
+    [ [ ( "font-heading", data.fonts.heading )
       , ( "font-text", data.fonts.text )
       , ( "font-code", data.fonts.code )
       ]
@@ -1453,3 +1467,55 @@ provider_ props =
                 \attrs children ->
                     H.div (HA.class targetClass :: attrs) children
             }
+
+
+
+-- Theme Html Helpers
+
+
+{-| Elm doesn't always play nice with CSS variables. This function is a workaround for that issue.
+
+**Important!** You can only use one these functions for a given html element: `Html.Attribute.style`, `Theme.styles`, `Theme.stylesList`.
+
+    div
+        [ styles
+            [ ( "color", Theme.baseForeground )
+            , ( "background", Theme.baseBackground )
+            ]
+        ]
+        []
+
+-}
+styles : List ( String, String ) -> H.Attribute msg
+styles xs =
+    xs
+        |> List.map (\( k, v ) -> k ++ ":" ++ v)
+        |> String.join ";"
+        |> HA.attribute "style"
+
+
+{-| Elm doesn't always play nice with CSS variables. This function is a workaround for that issue.
+
+    div
+        [ styles
+            [ ( "background", Theme.baseBackground, True )
+            , ( "color", Theme.primaryForeground, isPrimary )
+            , ( "color", Theme.baseForeground, not isPrimary )
+            ]
+        ]
+        []
+
+-}
+stylesList : List ( String, String, Bool ) -> H.Attribute msg
+stylesList xs =
+    xs
+        |> List.filterMap
+            (\( k, v, f ) ->
+                if f then
+                    Just (k ++ ":" ++ v)
+
+                else
+                    Nothing
+            )
+        |> String.join ";"
+        |> HA.attribute "style"

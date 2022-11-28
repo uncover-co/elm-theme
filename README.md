@@ -1,9 +1,9 @@
-# Elm-Theme
+# elm-theme
 
 **An opinionated, constraint-based, theme library for Elm applications.**
 
 - Themes are easy to create and extend.
-- Test the accessibility of your theme through our generator.
+- Test the accessibility of your theme through the theme sampler.
 - Mix and match different themes in a single application through providers.
 - Dark mode ready with class and system detection strategies.
 
@@ -33,9 +33,10 @@ main =
         ]
 ```
 
+
 # Tailwind Integration
 
-If you're using tailwind you're gonna love elm-theme!
+If you're using [Tailwind](https://tailwindcss.com/) you're gonna love elm-theme! We maintain a plugin so your theme is deeply integrated into your tailwind config.
 
 Your theme's font families are included like `font-heading`, `font-text` and `font-code`. And your theme's colors are included like `{color}-bg`, `{color}-fg` and `{color}-aux`.  So you can use them like the example below.
 
@@ -50,8 +51,8 @@ section
 
 Check out the [elm-theme-tailwindcss](https://www.npmjs.com/package/elm-theme-tailwindcss) tailwind plugin for extra information.
 
-## Troubleshoot
+# Elm & CSS Variables
 
-Elm doesn't always play nice with CSS variables. For example, the `background` property does not appear to respect values passed through CSS variables.
+This package is based on [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) and Elm doesn't always play nice with them. For example, the `background` property does not appear to respect values passed through CSS variables.
 
-For that reason, we've included two helper functions as a workaround to this problem. Check `Theme.styles` and `Theme.stylesList`.
+For that reason, we've included two helper functions as a workaround to this problem. See [Theme.styles](https://package.elm-lang.org/packages/uncover-co/elm-theme/latest/Theme#styles) and [Theme.stylesIf](https://package.elm-lang.org/packages/uncover-co/elm-theme/latest/Theme#stylesIf).

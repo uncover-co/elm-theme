@@ -15,7 +15,7 @@ module Theme exposing
     , globalProviderWithDarkMode, providerWithDarkMode, classStrategy, systemStrategy, DarkModeStrategy
     , optimizedProvider, optimizedProviderWithDarkMode, ThemeProvider
     , sample
-    , styles, stylesList
+    , styles, stylesIf
     , fontHeading, fontText, fontCode
     , baseForeground, baseBackground, baseAux, baseForegroundWithAlpha, baseBackgroundWithAlpha, baseAuxWithAlpha
     , neutralForeground, neutralBackground, neutralAux, neutralForegroundWithAlpha, neutralBackgroundWithAlpha, neutralAuxWithAlpha
@@ -76,7 +76,9 @@ module Theme exposing
 
 # Theme Html Helpers
 
-@docs styles, stylesList
+Elm doesn't always play nice with CSS variables. These functions are a workaround for that issue. **Please note that you can only use one of these functions per element (or Html.Attributes.style).**
+
+@docs styles, stylesIf
 
 
 # Theme Values
@@ -919,37 +921,37 @@ lightTheme =
             }
         , base =
             { background = Color.rgb255 253 253 253
-            , foreground = Color.rgb255 62 62 62
-            , aux = Color.rgb255 150 150 150
+            , foreground = Color.rgb255 43 52 59
+            , aux = Color.rgb255 99 119 136
             }
         , neutral =
             { background = Color.rgb255 91 111 125
-            , foreground = Color.rgb255 141 160 174
+            , foreground = Color.rgb255 99 119 136
             , aux = Color.rgb255 255 255 255
             }
         , primary =
-            { background = Color.rgb255 0 141 235
-            , foreground = Color.rgb255 95 185 244
+            { background = Color.rgb255 0 122 204
+            , foreground = Color.rgb255 0 119 199
             , aux = Color.rgb255 255 255 255
             }
         , secondary =
-            { background = Color.rgb255 234 96 223
-            , foreground = Color.rgb255 248 142 239
+            { background = Color.rgb255 192 57 181
+            , foreground = Color.rgb255 209 0 192
             , aux = Color.rgb255 255 255 255
             }
         , success =
-            { background = Color.rgb255 68 183 1
-            , foreground = Color.rgb255 115 209 60
-            , aux = Color.rgb255 255 255 255
+            { background = Color.rgb255 150 230 71
+            , foreground = Color.rgb255 34 128 0
+            , aux = Color.rgb255 0 66 38
             }
         , warning =
-            { background = Color.rgb255 230 157 0
-            , foreground = Color.rgb255 249 188 34
-            , aux = Color.rgb255 255 255 255
+            { background = Color.rgb255 250 192 56
+            , foreground = Color.rgb255 182 91 7
+            , aux = Color.rgb255 87 46 0
             }
         , danger =
-            { background = Color.rgb255 220 49 50
-            , foreground = Color.rgb255 248 102 103
+            { background = Color.rgb255 220 50 84
+            , foreground = Color.rgb255 230 25 66
             , aux = Color.rgb255 255 255 255
             }
         }
@@ -966,28 +968,28 @@ darkTheme =
             }
         , base =
             { background = Color.rgb255 37 40 48
-            , foreground = Color.rgb255 227 227 227
-            , aux = Color.rgb255 110 114 120
+            , foreground = Color.rgb255 240 240 240
+            , aux = Color.rgb255 150 154 162
             }
         , neutral =
-            { background = Color.rgb255 21 22 26
-            , foreground = Color.rgb255 255 255 255
+            { background = Color.rgb255 96 110 123
+            , foreground = Color.rgb255 199 206 214
             , aux = Color.rgb255 255 255 255
             }
         , primary =
-            { background = Color.rgb255 0 153 255
-            , foreground = Color.rgb255 145 190 243
+            { background = Color.rgb255 0 122 204
+            , foreground = Color.rgb255 105 171 247
             , aux = Color.rgb255 255 255 255
             }
         , secondary =
-            { background = Color.rgb255 234 96 223
+            { background = Color.rgb255 199 51 186
             , foreground = Color.rgb255 248 142 239
             , aux = Color.rgb255 255 255 255
             }
         , success =
             { background = Color.rgb255 74 200 0
             , foreground = Color.rgb255 119 223 59
-            , aux = Color.rgb255 27 74 0
+            , aux = Color.rgb255 119 223 59
             }
         , warning =
             { background = Color.rgb255 251 179 0
@@ -995,9 +997,9 @@ darkTheme =
             , aux = Color.rgb255 91 65 0
             }
         , danger =
-            { background = Color.rgb255 255 77 79
-            , foreground = Color.rgb255 242 156 156
-            , aux = Color.rgb255 91 0 1
+            { background = Color.rgb255 255 92 95
+            , foreground = Color.rgb255 251 116 116
+            , aux = Color.rgb255 56 27 0
             }
         }
 
@@ -1473,9 +1475,7 @@ provider_ props =
 -- Theme Html Helpers
 
 
-{-| Elm doesn't always play nice with CSS variables. This function is a workaround for that issue.
-
-**Important!** You can only use one these functions for a given html element: `Html.Attribute.style`, `Theme.styles`, `Theme.stylesList`.
+{-|
 
     div
         [ styles
@@ -1494,10 +1494,10 @@ styles xs =
         |> HA.attribute "style"
 
 
-{-| Elm doesn't always play nice with CSS variables. This function is a workaround for that issue.
+{-|
 
     div
-        [ styles
+        [ stylesIf
             [ ( "background", Theme.baseBackground, True )
             , ( "color", Theme.primaryForeground, isPrimary )
             , ( "color", Theme.baseForeground, not isPrimary )
@@ -1506,8 +1506,8 @@ styles xs =
         []
 
 -}
-stylesList : List ( String, String, Bool ) -> H.Attribute msg
-stylesList xs =
+stylesIf : List ( String, String, Bool ) -> H.Attribute msg
+stylesIf xs =
     xs
         |> List.filterMap
             (\( k, v, f ) ->

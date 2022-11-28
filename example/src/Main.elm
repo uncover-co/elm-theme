@@ -1,11 +1,14 @@
 module Main exposing (main)
 
-import ElmBook exposing (Book, book, withChapterGroups)
-import ElmBook.Chapter exposing (chapter, render, renderComponent)
+import ElmBook exposing (Book, book, withChapterGroups, withStatefulOptions)
+import ElmBook.Actions
+import ElmBook.Chapter exposing (chapter, render, renderComponent, renderStatefulComponent)
 import ElmBook.ComponentOptions
-import Html exposing (..)
+import ElmBook.StatefulOptions
+import Html as H exposing (..)
 import Html.Attributes exposing (..)
 import Theme
+import ThemeGenerator
 
 
 viewSideBySide : Html msg -> Html msg -> Html msg
@@ -16,25 +19,47 @@ viewSideBySide left right =
         ]
 
 
-main : Book ()
+main : Book ThemeGenerator.Model
 main =
-    book "Theme"
+    book "elm-theme"
+        |> withStatefulOptions
+            [ ElmBook.StatefulOptions.initialState ThemeGenerator.init
+            ]
         |> withChapterGroups
-            [ ( "Theme Spec"
-              , [ chapter "About Theme Spec"
+            [ ( "Theme"
+              , [ chapter "Design Tokens"
                     |> render """
-A common theme specification.
+Design tokens are all about constraints.
 
-> **Base**
-- `bg` e.g. the main background color
-- `fg` e.g. the main foreground color
-- `aux` e.g. accessible foreground variant (usually used for lighter text)
+The majority of time spent developing `elm-theme` was focused on trying out the minimum amount of colors and fonts the would allow us to create most if not all of your UI use cases with room for flexibility. If the set of fonts and colors we arrived seems obvious, that it is by design! 😁
 
-> **Primary, Secondary, Etc.**
-- `bg` e.g. color used for button background
-- `fg` e.g. the color used for primary texts on a base background
-- `aux` e.g. color used for text on top of a primary background
+**Fonts**
+- `heading` used for all types of headings
+- `text` used for the majority of text elements
+- `code` used for inline and blocks of code
+
+**Base**
+- `background` the main background color
+- `foreground` the main foreground color
+- `aux` accessible foreground variant (usually used for lighter text)
+
+**Primary, Secondary, Neutral, Success, Warning and Danger**
+- `background` color used for button background
+- `foreground` the color used for primary texts on a base background
+- `aux` color used for text on top of a primary background
 """
+                , chapter "Theme Generator"
+                    |> renderStatefulComponent
+                        (\state ->
+                            ThemeGenerator.view state
+                                |> H.map
+                                    (ElmBook.Actions.mapUpdate
+                                        { toState = \_ -> identity
+                                        , fromState = identity
+                                        , update = ThemeGenerator.update
+                                        }
+                                    )
+                        )
                 ]
               )
             , ( "Theme Provider"
